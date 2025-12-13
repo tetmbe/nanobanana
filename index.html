@@ -1526,334 +1526,123 @@ masterpiece, best quality, 1girl, solo, looking at viewer</code>
 
     <!-- FAQ Section -->
     <section id="faq" class="fade-in">
-        <h2 class="section-title">常见问题 FAQ（完整版）</h2>
+        <h2 class="section-title">常见问题 FAQ</h2>
 
         <div class="faq-list">
-            <!-- 基础问题 -->
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    Nano Banana 是哪个公司开发的？
+                    Nano Banana 是什么？
                 </button>
                 <div class="faq-answer">
-                    Nano Banana 不是一个公司的官方产品，而是社区对某类轻量级图像生成模型的昵称。可能有多个团队都在使用或开发类似的轻量模型，包括：
-                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li>开源社区的贡献者</li>
-                        <li>AI 研究机构的实验项目</li>
-                        <li>商业公司的内部代号</li>
-                    </ul>
+                    Nano Banana 是社区对轻量级 AI 图像生成模型的昵称。它不是某个公司的官方产品，而是代表了轻量化 AI 模型的发展趋势。这类模型体积小（几百MB）、显存占用低（4-6GB）、生成速度快（几秒出图），适合普通电脑使用。
                 </div>
             </div>
 
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    Nano Banana 和 Banana.dev 是什么关系？
-                </button>
-                <div class="faq-answer">
-                    这两个经常被混淆：
-                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li><strong>Nano Banana</strong>：轻量级 AI 图像生成模型的社区昵称</li>
-                        <li><strong>Banana.dev</strong>：一个模型托管平台，提供 API 服务部署各种 AI 模型</li>
-                    </ul>
-                    很多人将 Banana.dev 上的轻量模型误称为 "nano banana"
-                </div>
-            </div>
-
-            <!-- 使用问题 -->
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    生成的图片分辨率可以调高吗？
-                </button>
-                <div class="faq-answer">
-                    分辨率限制：
-                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li><strong>默认分辨率</strong>：通常是 512×512 或 768×768</li>
-                        <li><strong>最高支持</strong>：部分版本可达 1024×1024</li>
-                        <li><strong>高清优化</strong>：可以使用 Hires. fix 功能提升分辨率</li>
-                        <li><strong>注意</strong>：提高分辨率会降低生成速度</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    为什么我生成的图片质量很差？
+                    为什么生成的图片质量很差？
                 </button>
                 <div class="faq-answer">
                     可能的原因和解决方案：
-                    <ol style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li><strong>Prompt 问题</strong>：
-                            <ul>
-                                <li>描述不够具体：添加更多细节</li>
-                                <li>风格不明确：指定艺术风格</li>
-                                <li>质量词缺失：添加 high quality, detailed 等</li>
-                            </ul>
-                        </li>
-                        <li><strong>参数设置</strong>：
-                            <ul>
-                                <li>Steps 太少：增加到 20-30</li>
-                                <li>CFG Scale 不当：调整到 7-12</li>
-                                <li>种子问题：尝试不同的 seed</li>
-                            </ul>
-                        </li>
-                        <li><strong>模型版本</strong>：
-                            <ul>
-                                <li>使用了老旧版本：更新到最新</li>
-                                <li>模型损坏：重新下载</li>
-                            </ul>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    可以批量生成不同风格的图片吗？
-                </button>
-                <div class="faq-answer">
-                    批量生成方法：
                     <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li><strong>使用脚本</strong>：编写自动化脚本改变 prompt</li>
-                        <li><strong>API 批量调用</strong>：循环调用 API 接口</li>
-                        <li><strong>GUI 批量功能</strong>：某些界面支持批量任务队列</li>
-                        <li><strong>Prompt 模板</strong>：创建可替换的 prompt 模板</li>
+                        <li><strong>Prompt 描述</strong>：添加更多细节，明确指定风格</li>
+                        <li><strong>质量关键词</strong>：添加 "high quality, detailed, 4k" 等</li>
+                        <li><strong>参数调整</strong>：Steps 设置为 20-30，CFG Scale 7-12</li>
+                        <li><strong>尝试不同种子</strong>：每次使用不同的 seed</li>
                     </ul>
                 </div>
             </div>
 
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    如何保持生成图片的一致性？
+                    Nano Banana 与 Midjourney/SDXL 相比如何？
                 </button>
                 <div class="faq-answer">
-                    保持一致性的技巧：
                     <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li><strong>固定种子</strong>：使用相同的 seed 值</li>
-                        <li><strong>固定参数</strong>：保持 Steps、CFG 等参数不变</li>
-                        <li><strong>逐步变化</strong>：小幅修改 prompt，不要大改</li>
-                        <li><strong>使用参考图</strong>：图生图模式更容易保持一致性</li>
+                        <li><strong>优点</strong>：轻量快速、本地运行、完全免费</li>
+                        <li><strong>日常使用</strong>：插画、卡通、头像等接近大模型 80-90% 水准</li>
+                        <li><strong>限制</strong>：写实照片、复杂场景效果不如顶级模型</li>
                     </ul>
+                    总结：够用好用的性价比选择，但不是最顶级的画质。
                 </div>
             </div>
 
-            <!-- 性能问题 -->
-
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    为什么生成时会突然崩溃？
+                    可以商用吗？
                 </button>
                 <div class="faq-answer">
-                    常见崩溃原因：
+                    ⚠️ 需要谨慎考虑：
                     <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li><strong>显存溢出</strong>：超出 GPU 内存限制</li>
-                        <li><strong>内存泄漏</strong>：长时间运行未清理</li>
-                        <li><strong>版本冲突</strong>：依赖库版本不兼容</li>
-                        <li><strong>系统资源</strong>：CPU/RAM 使用率过高</li>
+                        <li><strong>查看平台条款</strong>：不同平台商用政策不同</li>
+                        <li><strong>版权问题</strong>：训练数据来源不透明</li>
+                        <li><strong>肖像权</strong>：避免使用真实人物</li>
+                        <li><strong>品牌元素</strong>：避免生成商标、logo</li>
                     </ul>
+                    建议商用前详细了解并遵守相关法律法规。
                 </div>
             </div>
 
-            <!-- 技术问题 -->
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    Nano Banana 底层是什么技术架构？
+                    需要什么配置才能运行？
                 </button>
                 <div class="faq-answer">
-                    大多数 Nano Banana 类型模型基于：
+                    基本要求：
                     <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li><strong>扩散模型架构</strong>：类似于 Stable Diffusion</li>
-                        <li><strong>U-Net 骨干网络</strong>：用于图像生成和去噪</li>
-                        <li><strong>CLIP 文本编码器</strong>：理解文本描述</li>
-                        <li><strong>VAE 编解码器</strong>：处理潜在空间表示</li>
+                        <li><strong>显存</strong>：4-6GB 即可流畅运行</li>
+                        <li><strong>系统</strong>：支持 Windows、macOS、Linux</li>
+                        <li><strong>硬件</strong>：普通笔记本显卡即可</li>
+                        <li><strong>无需高端设备</strong>：相比 SDXL 的 12GB+ 显存要求亲民很多</li>
                     </ul>
                 </div>
             </div>
 
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    支持 ControlNet 或 LoRA 吗？
+                    如何写出好的 Prompt？
                 </button>
                 <div class="faq-answer">
-                    取决于具体实现：
+                    黄金公式：<strong>主体 + 风格 + 细节 + 光影 + 质量</strong>
+                    <div class="prompt-box" style="margin: 1rem 0;">
+                        <code>示例：a cyberpunk girl, anime style, wearing leather jacket, neon lights, cinematic lighting, high detail, 4k</code>
+                    </div>
                     <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li>部分版本支持基础的 LoRA 微调</li>
-                        <li>ControlNet 支持可能有限或不完整</li>
-                        <li>建议查看具体版本的文档说明</li>
-                        <li>社区可能有兼容的扩展插件</li>
+                        <li><strong>主体</strong>：明确想要的核心内容</li>
+                        <li><strong>风格</strong>：指定艺术风格（anime、oil painting 等）</li>
+                        <li><strong>质量词</strong>：high quality、detailed、4k、masterpiece</li>
                     </ul>
                 </div>
             </div>
 
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    Nano Banana 支持多语言 Prompt 吗？
+                    支持中文 Prompt 吗？
                 </button>
                 <div class="faq-answer">
-                    语言支持情况：
                     <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li><strong>英文</strong>：完全支持，效果最好</li>
-                        <li><strong>中文</strong>：基本支持，可能需要英文关键词辅助</li>
-                        <li><strong>其他语言</strong>：支持有限，建议翻译成英文</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 画质对比 -->
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    画质能和 Midjourney/SDXL 比吗？
-                </button>
-                <div class="faq-answer">
-                    真实评价：
-                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li><strong>日常图/插画/卡通</strong>：接近大模型 80-90% 水准</li>
-                        <li><strong>写实照片级</strong>：明显不如专业模型</li>
-                        <li><strong>复杂光影/多人</strong>：稳定性较差</li>
-                    </ul>
-                    一句话：够用好用的效果，但不是顶级。Nano Banana 的定位是性价比之王。
-                </div>
-            </div>
-
-            <!-- 商用问题 -->
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    可以免费用吗？
-                </button>
-                <div class="faq-answer">
-                    取决于平台：
-                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li>某些网站提供免费额度</li>
-                        <li>本地部署版本则只花时间（不花钱）</li>
-                        <li>商业 API 通常是收费的</li>
-                    </ul>
-                    没有一个"统一官方免费版"。Nano Banana 的社区属性使得大部分版本都是免费的。
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    能商用吗？
-                </button>
-                <div class="faq-answer">
-                    要看具体使用情况：
-                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li>使用的是哪个平台</li>
-                        <li>哪个具体模型版本</li>
-                    </ul>
-                    ⚠️ <strong>风险点</strong>：
-                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li>训练数据来源不透明</li>
-                        <li>部分平台禁止商用</li>
-                        <li>生成内容版权不清晰</li>
-                    </ul>
-                    商用前一定要看平台条款。
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    生成的图片版权归谁？
-                </button>
-                <div class="faq-answer">
-                    版权归属复杂：
-                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li><strong>大部分情况</strong>：用户拥有生成图片版权</li>
-                        <li><strong>限制情况</strong>：某些平台可能有特殊条款</li>
-                        <li><strong>建议</strong>：商用前仔细阅读平台服务条款</li>
-                        <li><strong>注意</strong>：使用真实人物肖像需获得授权</li>
+                        <li><strong>英文</strong>：效果最好，完全支持</li>
+                        <li><strong>中文</strong>：基本可用，建议关键术语用英文</li>
+                        <li><strong>混合使用</strong>：可以用中文描述，英文关键词辅助</li>
+                        <li><strong>其他语言</strong>：建议翻译成英文使用</li>
                     </ul>
                 </div>
             </div>
 
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    如何避免生成侵犯版权的内容？
+                    如何避免常见错误？
                 </button>
                 <div class="faq-answer">
-                    避免侵权的方法：
                     <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li><strong>避免特定艺术家风格</strong>：不使用 "in the style of [artist]"</li>
-                        <li><strong>不使用品牌元素</strong>：避免 logo、商标等</li>
-                        <li><strong>原创为主</strong>：尽量生成原创内容</li>
-                        <li><strong>人工检查</strong>：生成后检查是否有侵权元素</li>
+                        <li><strong>手部畸形</strong>：在 prompt 中添加 "proper hands, detailed fingers"</li>
+                        <li><strong>构图混乱</strong>：明确指定构图方式（full body、close-up 等）</li>
+                        <li><strong>光影不自然</strong>：添加 lighting 描述（cinematic、natural light）</li>
+                        <li><strong>背景模糊</strong>：添加背景描述，避免空白</li>
                     </ul>
                 </div>
             </div>
-
-            <!-- 进阶问题 -->
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    可以训练自己的 Nano Banana 模型吗？
-                </button>
-                <div class="faq-answer">
-                    自定义训练：
-                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li><strong>技术要求</strong>：需要深度学习知识和大量计算资源</li>
-                        <li><strong>数据需求</strong>：通常需要数千到数万张图片</li>
-                        <li><strong>训练成本</strong>：GPU 训练可能需要数天到数周</li>
-                        <li><strong>替代方案</strong>：考虑使用 LoRA 微调代替完整训练</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    Nano Banana 的未来发展方向？
-                </button>
-                <div class="faq-answer">
-                    可能的发展趋势：
-                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li><strong>性能提升</strong>：在轻量化的基础上提高质量</li>
-                        <li><strong>功能扩展</strong>：支持更多生成模式和编辑功能</li>
-                        <li><strong>优化加速</strong>：更高效的推理优化</li>
-                        <li><strong>生态发展</strong>：更多插件和工具支持</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    与其他轻量模型（如 SD Turbo）如何选择？
-                </button>
-                <div class="faq-answer">
-                    选择建议：
-                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li><strong>Nano Banana</strong>：更注重社区和易用性</li>
-                        <li><strong>SD Turbo</strong>：更稳定，官方支持</li>
-                        <li><strong>选择依据</strong>：根据具体需求、社区支持、文档完善度决定</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    如何参与 Nano Banana 社区？
-                </button>
-                <div class="faq-answer">
-                    参与方式：
-                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li><strong>GitHub</strong>：关注开源项目，提交 Issue 和 PR</li>
-                        <li><strong>Reddit</strong>：r/stablediffusion 等社区讨论</li>
-                        <li><strong>Discord</strong>：加入 AI 艺术相关服务器</li>
-                        <li><strong>作品分享</strong>：在社交媒体分享作品并标注</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 其他问题 -->
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    和 Stable Diffusion 是什么关系？
-                </button>
-                <div class="faq-answer">
-                    多数情况是：
-                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                        <li>基于 SD 1.5/SD Turbo 魔改</li>
-                        <li>或是 SD 架构的轻量分支</li>
-                        <li>不是完全独立的新算法</li>
-                    </ul>
-                    Nano Banana 更像是 SD 生态中的一个轻量化分支。
-                </div>
-            </div>
+        </div>
 
     <!-- Appendix Section -->
     <section id="appendix" class="fade-in">
@@ -1908,38 +1697,7 @@ masterpiece, best quality, 1girl, solo, looking at viewer</code>
                 </ul>
             </div>
 
-            <div class="use-case-card">
-                <h4>📅 Nano Banana 更新日志</h4>
-
-                <p><strong>v1.0 (2025-01-15)</strong></p>
-                <ul style="margin-left: 1rem;">
-                    <li>初始版本发布</li>
-                    <li>基础文生图功能</li>
-                    <li>512×512 分辨率支持</li>
-                </ul>
-
-                <p style="margin-top: 1rem;"><strong>v1.1 (2025-02-20)</strong></p>
-                <ul style="margin-left: 1rem;">
-                    <li>增加图生图功能</li>
-                    <li>支持局部重绘</li>
-                    <li>优化显存占用</li>
-                </ul>
-
-                <p style="margin-top: 1rem;"><strong>v1.2 (2025-03-10)</strong></p>
-                <ul style="margin-left: 1rem;">
-                    <li>提升 768×768 支持</li>
-                    <li>添加基础 ControlNet</li>
-                    <li>改进 Prompt 理解</li>
-                </ul>
-
-                <p style="margin-top: 1rem;"><strong>v1.5 (2025-04-05)</strong></p>
-                <ul style="margin-left: 1rem;">
-                    <li>大幅提升生成质量</li>
-                    <li>增加 LoRA 支持</li>
-                    <li>优化速度 30%</li>
-                </ul>
-            </div>
-        </div>
+          </div>
     </section>
 
     <!-- CTA Section -->
