@@ -1879,7 +1879,7 @@ masterpiece, best quality, 1girl, solo, looking at viewer</code>
         }
 
         // 处理参考图上传
-        function handleReferenceImage(event) {
+        async function handleReferenceImage(event) {
             const file = event.target.files[0];
             if (!file) return;
 
@@ -1897,14 +1897,50 @@ masterpiece, best quality, 1girl, solo, looking at viewer</code>
                 return;
             }
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                referenceImageData = e.target.result;  // base64 数据
-                document.getElementById('previewImage').src = referenceImageData;
+            // 显示上传中状态
+            const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+            const originalPlaceholderHtml = uploadPlaceholder.innerHTML;
+            uploadPlaceholder.innerHTML = '<p style="color: var(--accent);">⏳ 正在上传参考图...</p>';
+
+            try {
+                // 上传到 imgbb 图床获取 URL
+                const imageUrl = await uploadToImgBB(file);
+                referenceImageData = imageUrl;  // 保存 URL
+                document.getElementById('previewImage').src = imageUrl;
                 document.getElementById('uploadPlaceholder').style.display = 'none';
                 document.getElementById('previewContainer').style.display = 'block';
-            };
-            reader.readAsDataURL(file);
+            } catch (error) {
+                console.error('上传失败:', error);
+                showError('参考图上传失败，请重试');
+                uploadPlaceholder.innerHTML = originalPlaceholderHtml;
+            }
+        }
+
+        // 上传图片到 SM.MS 图床（免费，无需 API key）
+        async function uploadToImgBB(file) {
+            const formData = new FormData();
+            formData.append('smfile', file);
+
+            const response = await fetch('https://sm.ms/api/v2/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('图床上传失败');
+            }
+
+            const data = await response.json();
+            if (data.success && data.data && data.data.url) {
+                return data.data.url;
+            }
+
+            // SM.MS 有时会返回重复图片的信息
+            if (data.images && data.images.length > 0) {
+                return data.images[0].url;
+            }
+
+            throw new Error('无法获取图片 URL: ' + JSON.stringify(data));
         }
 
         // 移除参考图
@@ -1983,9 +2019,9 @@ masterpiece, best quality, 1girl, solo, looking at viewer</code>
                     n: n
                 };
 
-                // 如果有参考图，添加到请求中
+                // 如果有参考图，添加 image_urls 参数
                 if (referenceImageData) {
-                    requestBody.image = referenceImageData;
+                    requestBody.image_urls = [referenceImageData];
                 }
 
                 // 步骤1：创建图片生成任务
