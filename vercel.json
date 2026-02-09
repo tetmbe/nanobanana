@@ -1,0 +1,10 @@
+{
+  "build": {
+    "env": {
+      "APIMART_API_KEY": "@apimart-api-key"
+    }
+  },
+  "installCommand": "echo 'No install needed'",
+  "buildCommand": "node replace-env.js && echo 'Build complete'",
+  "outputDirectory": "./"
+}
