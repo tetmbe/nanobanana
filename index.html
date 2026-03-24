@@ -1858,7 +1858,8 @@ masterpiece, best quality, 1girl, solo, looking at viewer</code>
     let currentPrompt = '';
     let currentSize = '1:1';
     let currentN = 1;
-    let referenceImageData = null; // 仅用于本地预览，当前不直接上传给后端
+    let referenceImageData = null; // 用于本地预览的 base64
+    let referenceFile = null; // 用于上传的原始文件对象
 
     // 设置灵感示例
     function setPrompt(text) {
@@ -1901,6 +1902,7 @@ masterpiece, best quality, 1girl, solo, looking at viewer</code>
         try {
             const base64Data = await fileToBase64(file);
             referenceImageData = base64Data;
+            referenceFile = file; // 保存文件对象用于上传
             previewImage.src = base64Data;
             uploadPlaceholder.style.display = 'none';
             previewContainer.style.display = 'block';
@@ -1924,6 +1926,7 @@ masterpiece, best quality, 1girl, solo, looking at viewer</code>
     // 移除参考图
     function removeReferenceImage() {
         referenceImageData = null;
+        referenceFile = null;
 
         const referenceImage = document.getElementById('referenceImage');
         const previewImage = document.getElementById('previewImage');
@@ -2000,30 +2003,56 @@ masterpiece, best quality, 1girl, solo, looking at viewer</code>
             return;
         }
 
-        // 当前安全版先不支持浏览器本地文件直接作为 image_urls 上传
-        if (referenceImageData) {
-            showError('当前安全版暂不支持本地参考图直传。要支持图生图，需要先把图片上传到公网 URL（例如 Vercel Blob 或 S3），再由后端转发给模型。');
-            return;
-        }
-
         if (generateBtn) generateBtn.disabled = true;
         if (loading) loading.style.display = 'block';
         if (result) result.innerHTML = '';
         if (progress) progress.textContent = '正在提交生成请求...';
 
+        let imageUrls = null;
+
+        // 如果有参考图，先上传到 Vercel Blob 获取公网 URL
+        if (referenceImageData && referenceFile) {
+            if (progress) progress.textContent = '正在上传参考图...';
+            try {
+                const formData = new FormData();
+                formData.append('file', referenceFile);
+
+                const uploadRes = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const uploadData = await uploadRes.json();
+                if (!uploadRes.ok) {
+                    throw new Error(uploadData.error || '参考图上传失败');
+                }
+
+                imageUrls = [uploadData.url];
+                if (progress) progress.textContent = '参考图上传完成，正在生成...';
+            } catch (uploadError) {
+                throw new Error('参考图上传失败: ' + uploadError.message);
+            }
+        }
+
         try {
+            const requestBody = {
+                prompt: prompt,
+                size: size,
+                n: n,
+                model: 'qwen-image-2.0',
+                resolution: '1K'
+            };
+
+            if (imageUrls) {
+                requestBody.image_urls = imageUrls;
+            }
+
             const response = await fetch('/api/generate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    prompt: prompt,
-                    size: size,
-                    n: n,
-                    model: 'qwen-image-2.0',
-                    resolution: '1K'
-                })
+                body: JSON.stringify(requestBody)
             });
 
             const data = await response.json().catch(() => ({}));
