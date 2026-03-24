@@ -1,10 +1,7 @@
 {
-  "build": {
-    "env": {
-      "APIMART_API_KEY": "@apimart-api-key"
+  "functions": {
+    "api/*.js": {
+      "maxDuration": 30
     }
-  },
-  "installCommand": "echo 'No install needed'",
-  "buildCommand": "node replace-env.js && echo 'Build complete'",
-  "outputDirectory": "./"
+  }
 }
