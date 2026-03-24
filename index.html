@@ -792,6 +792,7 @@
             <h2 class="section-title">🎨 APIMart 图片生成器</h2>
             <p style="text-align: center; color: var(--text-secondary); margin-bottom: 3rem;">
                 体验 AI 图像生成的魅力，输入描述即可创作精美图片
+                         暂不支持调用nano banana pro模型
             </p>
 
             <div style="background: var(--bg-card); padding: 2rem; border-radius: 1rem;">
@@ -851,24 +852,13 @@
                         style="width: 100%; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 0.5rem; color: var(--text-primary); resize: vertical; min-height: 100px; font-family: inherit;"></textarea>
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
-                    <div class="form-group">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">图片尺寸：</label>
-                        <select id="size" style="width: 100%; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 0.5rem; color: var(--text-primary);">
-                            <option value="1:1">1:1 (正方形)</option>
-                            <option value="2:3">2:3 (竖图)</option>
-                            <option value="3:2">3:2 (横图)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">生成数量：</label>
-                        <select id="n" style="width: 100%; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 0.5rem; color: var(--text-primary);">
-                            <option value="1">1张</option>
-                            <option value="2">2张</option>
-                            <option value="4">4张</option>
-                        </select>
-                    </div>
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">图片尺寸：</label>
+                    <select id="size" style="width: 100%; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 0.5rem; color: var(--text-primary);">
+                        <option value="1:1">1:1 (正方形)</option>
+                        <option value="2:3">2:3 (竖图)</option>
+                        <option value="3:2">3:2 (横图)</option>
+                    </select>
                 </div>
 
                 <button id="generateBtn" onclick="generateImage()" class="btn btn-primary" style="width: 100%; padding: 1.2rem; font-size: 1.1rem;">
@@ -1970,7 +1960,7 @@ masterpiece, best quality, 1girl, solo, looking at viewer</code>
         async function generateImage() {
             const prompt = document.getElementById('prompt').value.trim();
             const size = document.getElementById('size').value;
-            const n = parseInt(document.getElementById('n').value);
+            const n = 1; // 固定生成1张图片
             const generateBtn = document.getElementById('generateBtn');
             const loading = document.getElementById('loading');
             const result = document.getElementById('result');
@@ -2100,36 +2090,32 @@ masterpiece, best quality, 1girl, solo, looking at viewer</code>
 
             let html = '<h3 style="color: var(--accent); margin-bottom: 1rem;">生成的图片：</h3>';
 
-            // 添加重新生成和操作按钮
+            // 添加重新生成按钮
             html += `
                 <div style="margin-bottom: 1.5rem; text-align: center;">
-                    <button onclick="regenerateImages()" class="btn btn-secondary" style="margin-right: 1rem;">
+                    <button onclick="regenerateImages()" class="btn btn-secondary">
                         🔄 重新生成
-                    </button>
-                    <button onclick="downloadAllImages()" class="btn btn-secondary">
-                        ⬇ 下载所有图片
                     </button>
                 </div>
             `;
 
-            images.forEach((image, index) => {
+            // 显示生成的图片(固定只显示一张)
+            if (images && images.length > 0) {
+                const image = images[0];
                 if (image.url && image.url.length > 0) {
                     const imageUrl = image.url[0];
                     html += `<div style="margin-bottom: 1.5rem; background: var(--bg-secondary); padding: 1rem; border-radius: 0.5rem;">
-                        <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">图片 ${index + 1}</h4>
-                        <img src="${imageUrl}" alt="Generated image ${index + 1}" style="width: 100%; border-radius: 0.5rem;">
+                        <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">生成的图片</h4>
+                        <img src="${imageUrl}" alt="Generated image" style="width: 100%; border-radius: 0.5rem;">
                         <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 1rem;">
-                            <a href="${imageUrl}" download="generated-image-${index + 1}.png"
+                            <a href="${imageUrl}" download="nano-banana-image.png"
                                class="btn btn-primary" style="text-decoration: none; padding: 0.5rem 1rem; font-size: 0.9rem;">
-                                ⬇ 下载图片 ${index + 1}
+                                ⬇ 下载图片
                             </a>
                         </div>
-                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">
-                            (有效期至: ${new Date(image.expires_at * 1000).toLocaleString()})
-                        </p>
                     </div>`;
                 }
-            });
+            }
 
             result.innerHTML = html;
         }
@@ -2141,25 +2127,6 @@ masterpiece, best quality, 1girl, solo, looking at viewer</code>
                 return;
             }
             await generateImage();
-        }
-
-        // 下载所有图片
-        function downloadAllImages() {
-            const images = document.querySelectorAll('#result img');
-            if (images.length === 0) {
-                showError('没有可下载的图片');
-                return;
-            }
-
-            images.forEach((img, index) => {
-                const imageUrl = img.src;
-                const link = document.createElement('a');
-                link.href = imageUrl;
-                link.download = `nano-banana-generated-${index + 1}.png`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            });
         }
 
         // 显示错误信息
