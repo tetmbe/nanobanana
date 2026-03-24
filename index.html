@@ -827,25 +827,6 @@
                     </div>
                 </div>
 
-                <!-- 参考图上传区域 -->
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">📷 参考图（可选）：</label>
-                    <div style="border: 2px dashed var(--border); border-radius: 0.5rem; padding: 1.5rem; text-align: center; background: var(--bg-secondary); cursor: pointer; transition: all 0.3s;" onclick="document.getElementById('referenceImage').click()">
-                        <input type="file" id="referenceImage" accept="image/*" style="display: none;" onchange="handleReferenceImage(event)">
-                        <div id="uploadPlaceholder">
-                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📤</div>
-                            <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">点击或拖拽上传参考图</p>
-                            <p style="color: var(--text-muted); font-size: 0.8rem;">支持 JPG、PNG、WEBP 格式，最大 5MB</p>
-                        </div>
-                        <div id="previewContainer" style="display: none;">
-                            <img id="previewImage" style="max-width: 100%; max-height: 200px; border-radius: 0.5rem; margin-bottom: 0.5rem;">
-                            <button onclick="event.stopPropagation(); removeReferenceImage()" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
-                                ❌ 移除参考图
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="form-group" style="margin-bottom: 1.5rem;">
                     <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">图片描述：</label>
                     <textarea id="prompt" placeholder="请输入您想要生成的图片描述，或点击上方灵感示例"
@@ -1858,8 +1839,6 @@ masterpiece, best quality, 1girl, solo, looking at viewer</code>
     let currentPrompt = '';
     let currentSize = '1:1';
     let currentN = 1;
-    let referenceImageData = null; // 用于本地预览的 base64
-    let referenceFile = null; // 用于上传的原始文件对象
 
     // 设置灵感示例
     function setPrompt(text) {
@@ -1870,107 +1849,7 @@ masterpiece, best quality, 1girl, solo, looking at viewer</code>
         currentPrompt = text;
     }
 
-    // 处理参考图上传
-    async function handleReferenceImage(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
-        if (!validTypes.includes(file.type)) {
-            showError('请上传 JPG、PNG 或 WEBP 格式的图片');
-            return;
-        }
-
-        const maxSize = 5 * 1024 * 1024;
-        if (file.size > maxSize) {
-            showError('图片大小不能超过 5MB');
-            return;
-        }
-
-        const uploadPlaceholder = document.getElementById('uploadPlaceholder');
-        const previewContainer = document.getElementById('previewContainer');
-        const previewImage = document.getElementById('previewImage');
-
-        if (!uploadPlaceholder || !previewContainer || !previewImage) {
-            showError('上传组件缺失，请检查页面结构');
-            return;
-        }
-
-        const originalPlaceholderHtml = uploadPlaceholder.innerHTML;
-        uploadPlaceholder.innerHTML = '<p style="color: var(--accent);">⏳ 正在处理参考图...</p>';
-
-        try {
-            const base64Data = await fileToBase64(file);
-            referenceImageData = base64Data;
-            referenceFile = file; // 保存文件对象用于上传
-            previewImage.src = base64Data;
-            uploadPlaceholder.style.display = 'none';
-            previewContainer.style.display = 'block';
-        } catch (error) {
-            console.error('处理参考图失败:', error);
-            showError('参考图处理失败，请重试');
-            uploadPlaceholder.innerHTML = originalPlaceholderHtml;
-        }
-    }
-
-    // 将文件转换为 base64
-    function fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-        });
-    }
-
-    // 移除参考图
-    function removeReferenceImage() {
-        referenceImageData = null;
-        referenceFile = null;
-
-        const referenceImage = document.getElementById('referenceImage');
-        const previewImage = document.getElementById('previewImage');
-        const uploadPlaceholder = document.getElementById('uploadPlaceholder');
-        const previewContainer = document.getElementById('previewContainer');
-
-        if (referenceImage) referenceImage.value = '';
-        if (previewImage) previewImage.src = '';
-        if (uploadPlaceholder) uploadPlaceholder.style.display = 'block';
-        if (previewContainer) previewContainer.style.display = 'none';
-    }
-
-    // 拖拽上传支持
     document.addEventListener('DOMContentLoaded', function() {
-        const uploadArea = document.querySelector('[onclick*="referenceImage"]');
-        if (uploadArea) {
-            uploadArea.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                this.style.borderColor = 'var(--accent)';
-                this.style.background = 'rgba(255, 215, 0, 0.1)';
-            });
-
-            uploadArea.addEventListener('dragleave', function(e) {
-                e.preventDefault();
-                this.style.borderColor = 'var(--border)';
-                this.style.background = 'var(--bg-secondary)';
-            });
-
-            uploadArea.addEventListener('drop', function(e) {
-                e.preventDefault();
-                this.style.borderColor = 'var(--border)';
-                this.style.background = 'var(--bg-secondary)';
-
-                const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                    const referenceImage = document.getElementById('referenceImage');
-                    if (referenceImage) {
-                        referenceImage.files = files;
-                    }
-                    handleReferenceImage({ target: { files: files } });
-                }
-            });
-        }
-
         const promptEl = document.getElementById('prompt');
         if (promptEl) {
             promptEl.addEventListener('keypress', function(e) {
@@ -2008,51 +1887,19 @@ masterpiece, best quality, 1girl, solo, looking at viewer</code>
         if (result) result.innerHTML = '';
         if (progress) progress.textContent = '正在提交生成请求...';
 
-        let imageUrls = null;
-
-        // 如果有参考图，先上传到 Vercel Blob 获取公网 URL
-        if (referenceImageData && referenceFile) {
-            if (progress) progress.textContent = '正在上传参考图...';
-            try {
-                const formData = new FormData();
-                formData.append('file', referenceFile);
-
-                const uploadRes = await fetch('/api/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const uploadData = await uploadRes.json();
-                if (!uploadRes.ok) {
-                    throw new Error(uploadData.error || '参考图上传失败');
-                }
-
-                imageUrls = [uploadData.url];
-                if (progress) progress.textContent = '参考图上传完成，正在生成...';
-            } catch (uploadError) {
-                throw new Error('参考图上传失败: ' + uploadError.message);
-            }
-        }
-
         try {
-            const requestBody = {
-                prompt: prompt,
-                size: size,
-                n: n,
-                model: 'qwen-image-2.0',
-                resolution: '1K'
-            };
-
-            if (imageUrls) {
-                requestBody.image_urls = imageUrls;
-            }
-
             const response = await fetch('/api/generate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(requestBody)
+                body: JSON.stringify({
+                    prompt: prompt,
+                    size: size,
+                    n: n,
+                    model: 'qwen-image-2.0',
+                    resolution: '1K'
+                })
             });
 
             const data = await response.json().catch(() => ({}));
